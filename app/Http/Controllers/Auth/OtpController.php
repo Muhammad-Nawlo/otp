@@ -37,7 +37,8 @@ class OtpController extends Controller
             $user->update(['email_verified_at' => now()]);
             return redirect()->route('dashboard');
         }
-        return view('auth.otp')->withErrors(['otp' => $status]);
+        $message = $status === OTPStatus::INVALID ? trans('Your OTP is invalid') : trans('Your OTP is Expired');
+        return view('auth.otp')->withErrors(['otp' => $message]);
     }
 
     public function resend()

@@ -9,7 +9,7 @@ use Carbon\Carbon;
 class OtpService
 {
 
-    public function generate(string $identifier, int $length = 4, int $validity = 10)
+    public function generate(string $identifier, int $length = 4, int $validity = 5)
     {
         Otp::where('identifier', $identifier)->where('valid', true)->delete();
         $token = $this->generateNumericToken($length);
@@ -27,14 +27,12 @@ class OtpService
     public function isValid(string $identifier, string $token): bool
     {
         $otp = Otp::where('identifier', $identifier)->where('token', $token)->first();
+        if (!$otp) return false;
 
-        if ($otp instanceof Otp) {
-            $validity = $otp->created_at->addMinutes($otp->validity);
+        $validity = $otp->created_at->addMinutes($otp->validity);
 
-            return Carbon::now()->lt($validity) && $otp->valid;
-        }
+        return Carbon::now()->lt($validity) && $otp->valid;
 
-        return false;
     }
 
     public function validate(string $identifier, string $token)

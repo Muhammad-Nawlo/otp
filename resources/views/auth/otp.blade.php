@@ -6,7 +6,7 @@
         @csrf
         <div>
             <x-input-label for="otp" :value="__('Otp')" />
-            <x-text-input id="otp" class="block mt-1 w-full" type="number" min="1000" max="9999" name="otp" :value="old('otp')" required autofocus />
+            <x-text-input id="otp" class="block mt-1 w-full" type="number"  name="otp" :value="old('otp')" required autofocus />
             <x-input-error :messages="$errors->get('otp')" class="mt-2" />
         </div>
 
